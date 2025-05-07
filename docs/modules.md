@@ -1,0 +1,1 @@
+::: buildstock_fetcher.foo
