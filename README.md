@@ -10,52 +10,26 @@ This library simplifies downloading building characteristics and load curve data
 - **Github repository**: <https://github.com/switchbox-data/buildstock-fetcher/>
 - **Documentation** <https://switchbox-data.github.io/buildstock-fetcher/>
 
-## Getting started with your project
+## Getting start with the project
 
-### 1. Create a New Repository
+### 1. Set Up Your Development Environment
 
-First, create a repository on GitHub with the same name as this project, and then run the following commands:
+The easiest way to set up the library's dev environment is to use devcontainers. To do so, open up the repo in VSCode or a VSCode fork like Cursor or Positron. The editor will auto-detect the presence of the repo's devcontainer (configured in `.devcontainer/devcontainer.json`). Click "Reopen in Container" to launch the devcontainer.
 
-```bash
-git init -b main
-git add .
-git commit -m "init commit"
-git remote add origin git@github.com:switchbox-data/buildstock-fetcher.git
-git push -u origin main
-```
-
-### 2. Set Up Your Development Environment
-
-Then, install the environment and the pre-commit hooks with
+Alternatively, you can install the environment and the pre-commit hooks on your laptop with
 
 ```bash
 make install
 ```
 
-This will also generate your `uv.lock` file
+You are now ready to start development on the library!
+The github action CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
 
-### 3. Run the pre-commit hooks
-
-Initially, the CI/CD pipeline might be failing due to formatting issues. To resolve those run:
-
-```bash
-uv run pre-commit run -a
-```
-
-### 4. Commit the changes
-
-Lastly, commit the changes made by the two steps above to your repository.
-
-```bash
-git add .
-git commit -m 'Fix formatting issues'
-git push origin main
-```
-
-You are now ready to start development on your project!
-The CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
+### 2. Set up PyPI publishing
 
 To finalize the set-up for publishing to PyPI, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/publishing/#set-up-for-pypi).
+
+### 3. Activate automatic documentation
 For activating the automatic documentation with MkDocs, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/mkdocs/#enabling-the-documentation-on-github).
 
 ## Releasing a new version
