@@ -30,7 +30,7 @@ class BuildingID:
         return json.dumps(asdict(self))
 
 
-def fetch_bldg_ids(state: str) -> list[str]:
+def fetch_bldg_ids(state: str) -> list[BuildingID]:
     """Fetch a list of Building ID's
 
     Provided a state, returns a list of building ID's for that state.
@@ -42,7 +42,11 @@ def fetch_bldg_ids(state: str) -> list[str]:
         A list of building ID's for the given state.
     """
     if state == "MA":
-        return ["0000007", "0000008", "0000009"]
+        return [
+            BuildingID(bldg_id=7),
+            BuildingID(bldg_id=8),
+            BuildingID(bldg_id=9),
+        ]
 
     else:
         raise NotImplementedError(f"State {state} not supported")
@@ -95,5 +99,5 @@ def fetch_bldg_data(
 
 if __name__ == "__main__":  # pragma: no cover
     tmp_ids = fetch_bldg_ids("MA")
-    tmp_data = fetch_bldg_data(tmp_ids)
-    print(f"Downloaded files: {[str(path) for path in tmp_data]}")
+    # tmp_data = fetch_bldg_data(tmp_ids)
+    # print(f"Downloaded files: {[str(path) for path in tmp_data]}")
