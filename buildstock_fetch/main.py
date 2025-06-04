@@ -52,25 +52,13 @@ def fetch_bldg_ids(state: str) -> list[BuildingID]:
         raise NotImplementedError(f"State {state} not supported")
 
 
-def fetch_bldg_data(
-    bldg_ids: list[str],
-    release_number: str = "1.1",
-    release_year: str = "2022",
-    res_com: str = "resstock",
-    weather: str = "tmy3",
-    upgrade_id: str = "0",
-) -> list[Path]:
+def fetch_bldg_data(bldg_ids: list[BuildingID]) -> list[Path]:
     """Download building data for a given list of building ids
 
     Downloads the data for the given building ids and returns list of paths to the downloaded files.
 
     Args:
-        bldg_ids: A list of building ids to download data for.
-        release_number: The release number of the data to download.
-        release_year: The release year of the data to download.
-        res_com: The type of data to download. Either "resstock" or "comstock".
-        weather: The weather data to download. Either "tmy3" or "amy_2018".
-        upgrade_id: The upgrade id to download. See the NREL ResStock documentation for more information.
+        bldg_ids: A list of BuildingID objects to download data for.
 
     Returns:
         A list of paths to the downloaded files.
@@ -80,16 +68,10 @@ def fetch_bldg_data(
     os.makedirs(data_dir, exist_ok=True)
 
     for bldg_id in bldg_ids:
-        url = (
-            "https://oedi-data-lake.s3.amazonaws.com/nrel-pds-building-stock/"
-            f"end-use-load-profiles-for-us-building-stock/{release_year}/{res_com}_{weather}_release_{release_number}/"
-            f"building_energy_models/upgrade={upgrade_id}/bldg{bldg_id}-up0{upgrade_id}.zip"
-        )
-
-        response = requests.get(url, timeout=30)
+        response = requests.get(bldg_id.get_download_url(), timeout=30)
         response.raise_for_status()
 
-        output_path = data_dir / f"{bldg_id}_upgrade{upgrade_id}.zip"
+        output_path = data_dir / f"{bldg_id}_upgrade{bldg_id.upgrade_id}.zip"
         with open(output_path, "wb") as file:
             file.write(response.content)
 
