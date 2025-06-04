@@ -1,7 +1,18 @@
 import os
+from dataclasses import dataclass
 from pathlib import Path
 
 import requests
+
+
+@dataclass
+class BuildingID:
+    bldg_id: int
+    release_number: str = "1"
+    release_year: str = "2022"
+    res_com: str = "resstock"
+    weather: str = "tmy3"
+    upgrade_id: str = "0"
 
 
 def fetch_bldg_ids(state: str) -> list[str]:
