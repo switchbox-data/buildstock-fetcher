@@ -41,7 +41,7 @@ def fetch_bldg_data(
     for bldg_id in bldg_ids:
         url = (
             "https://oedi-data-lake.s3.amazonaws.com/nrel-pds-building-stock/"
-            f"end-use-load-profiles-for-us-building-stock/2022/{res_com}_{weather}_release_{release_number}/"
+            f"end-use-load-profiles-for-us-building-stock/{release_year}/{res_com}_{weather}_release_{release_number}/"
             f"building_energy_models/upgrade={upgrade_id}/bldg{bldg_id}-up0{upgrade_id}.zip"
         )
 
