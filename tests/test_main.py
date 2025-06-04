@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from buildstock_fetcher.main import fetch_bldg_ids, fetch_bldg_data
+from buildstock_fetcher.main import fetch_bldg_data, fetch_bldg_ids
 
 
 def test_fetch_bldg_ids():
