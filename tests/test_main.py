@@ -6,7 +6,7 @@ import pytest
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from buildstock_fetcher.main import fetch_bldg_data, fetch_bldg_ids
+from buildstock_fetch.main import fetch_bldg_data, fetch_bldg_ids
 
 
 @pytest.fixture(scope="function")
