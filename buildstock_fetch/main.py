@@ -22,7 +22,7 @@ class BuildingID:
             f"end-use-load-profiles-for-us-building-stock/{self.release_year}/"
             f"{self.res_com}_{self.weather}_release_{self.release_number}/"
             f"building_energy_models/upgrade={self.upgrade_id}/"
-            f"bldg{self.bldg_id}-up0{self.upgrade_id}.zip"
+            f"bldg{self.bldg_id:07}-up0{self.upgrade_id}.zip"
         )
 
     def to_json(self) -> str:
@@ -71,7 +71,7 @@ def fetch_bldg_data(bldg_ids: list[BuildingID]) -> list[Path]:
         response = requests.get(bldg_id.get_download_url(), timeout=30)
         response.raise_for_status()
 
-        output_path = data_dir / f"{bldg_id}_upgrade{bldg_id.upgrade_id}.zip"
+        output_path = data_dir / f"{bldg_id.bldg_id:07}_upgrade{bldg_id.upgrade_id}.zip"
         with open(output_path, "wb") as file:
             file.write(response.content)
 
@@ -81,5 +81,5 @@ def fetch_bldg_data(bldg_ids: list[BuildingID]) -> list[Path]:
 
 if __name__ == "__main__":  # pragma: no cover
     tmp_ids = fetch_bldg_ids("MA")
-    # tmp_data = fetch_bldg_data(tmp_ids)
-    # print(f"Downloaded files: {[str(path) for path in tmp_data]}")
+    tmp_data = fetch_bldg_data(tmp_ids)
+    print(f"Downloaded files: {[str(path) for path in tmp_data]}")
