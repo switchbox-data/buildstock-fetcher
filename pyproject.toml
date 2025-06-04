@@ -1,5 +1,5 @@
 [project]
-name = "buildstock-fetcher"
+name = "buildstock-fetch"
 version = "0.0.1"
 description = "This library simplifies downloading building characteristics and load curve data from NREL's ResStock and ComStock projects."
 authors = [{ name = "Switchbox", email = "bryan@switch.box" }]
@@ -22,9 +22,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://switchbox-data.github.io/buildstock-fetcher/"
-Repository = "https://github.com/switchbox-data/buildstock-fetcher"
-Documentation = "https://switchbox-data.github.io/buildstock-fetcher/"
+Homepage = "https://switchbox-data.github.io/buildstock-fetch/"
+Repository = "https://github.com/switchbox-data/buildstock-fetch"
+Documentation = "https://switchbox-data.github.io/buildstock-fetch/"
 
 [dependency-groups]
 dev = [

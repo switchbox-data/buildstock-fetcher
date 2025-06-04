@@ -1,10 +1,10 @@
-site_name: buildstock-fetcher
-repo_url: https://github.com/switchbox-data/buildstock-fetcher
-site_url: https://switchbox-data.github.io/buildstock-fetcher
+site_name: buildstock-fetch
+repo_url: https://github.com/switchbox-data/buildstock-fetch
+site_url: https://switchbox-data.github.io/buildstock-fetch
 site_description: This library simplifies downloading building characteristics and load curve data from NREL's ResStock and ComStock projects.
 site_author: Switchbox
 edit_uri: edit/main/docs/
-repo_name: switchbox-data/buildstock-fetcher
+repo_name: switchbox-data/buildstock-fetch
 copyright: Maintained by <a href="https://switchbox-data.com">switchbox-data</a>.
 
 nav:
@@ -41,9 +41,9 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/switchbox-data/buildstock-fetcher
+      link: https://github.com/switchbox-data/buildstock-fetch
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/buildstock-fetcher
+      link: https://pypi.org/project/buildstock-fetch
 
 markdown_extensions:
   - toc:
