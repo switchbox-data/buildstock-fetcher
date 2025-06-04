@@ -34,7 +34,7 @@ def fetch_bldg_data(
 
     Downloads the data for the given building ids and returns list of paths to the downloaded files.
     """
-    data_dir = Path(__file__).parent / "data"
+    data_dir = Path(__file__).parent.parent / "data"
     downloaded_paths = []
     os.makedirs(data_dir, exist_ok=True)
 
