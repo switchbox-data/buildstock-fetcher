@@ -6,7 +6,7 @@ import pytest
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from buildstock_fetch.main import fetch_bldg_data, fetch_bldg_ids
+from buildstock_fetch.main import BuildingID, fetch_bldg_data, fetch_bldg_ids
 
 
 @pytest.fixture(scope="function")
@@ -24,7 +24,11 @@ def cleanup_downloads():
 
 
 def test_fetch_bldg_ids():
-    assert fetch_bldg_ids("MA") == ["0000007", "0000008", "0000009"]
+    assert fetch_bldg_ids("MA") == [
+        BuildingID(bldg_id=7),
+        BuildingID(bldg_id=8),
+        BuildingID(bldg_id=9),
+    ]
 
 
 def test_fetch_bldg_data(cleanup_downloads):
