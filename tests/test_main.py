@@ -32,6 +32,6 @@ def test_fetch_bldg_ids():
 
 
 def test_fetch_bldg_data(cleanup_downloads):
-    fetch_bldg_data(["0000007", "0000008"])
+    fetch_bldg_data([BuildingID(bldg_id=7), BuildingID(bldg_id=8)])
     assert Path("data/0000007_upgrade0.zip").exists()
     assert Path("data/0000008_upgrade0.zip").exists()
