@@ -29,9 +29,6 @@ The github action CI/CD pipeline will be triggered when you open a pull request,
 
 To finalize the set-up for publishing to PyPI, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/publishing/#set-up-for-pypi).
 
-### 3. Activate automatic documentation
-For activating the automatic documentation with MkDocs, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/mkdocs/#enabling-the-documentation-on-github).
-
 ## Releasing a new version
 
 - Create an API Token on [PyPI](https://pypi.org/).
