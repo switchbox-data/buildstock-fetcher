@@ -5,15 +5,15 @@ import requests
 
 
 def fetch_bldg_ids(state: str) -> list[str]:
-    """Summary line.
+    """Fetch a list of Building ID's
 
-    Extended description of function.
+    Provided a state, returns a list of building ID's for that state.
 
     Args:
-        bar: Description of input argument.
+        state: The state to fetch building ID's for.
 
     Returns:
-        Description of return value
+        A list of building ID's for the given state.
     """
     if state == "MA":
         return ["0000007", "0000008", "0000009"]
@@ -30,9 +30,20 @@ def fetch_bldg_data(
     weather: str = "tmy3",
     upgrade_id: str = "0",
 ) -> list[Path]:
-    """Summary line.
+    """Download building data for a given list of building ids
 
     Downloads the data for the given building ids and returns list of paths to the downloaded files.
+
+    Args:
+        bldg_ids: A list of building ids to download data for.
+        release_number: The release number of the data to download.
+        release_year: The release year of the data to download.
+        res_com: The type of data to download. Either "resstock" or "comstock".
+        weather: The weather data to download. Either "tmy3" or "amy_2018".
+        upgrade_id: The upgrade id to download. See the NREL ResStock documentation for more information.
+
+    Returns:
+        A list of paths to the downloaded files.
     """
     data_dir = Path(__file__).parent.parent / "data"
     downloaded_paths = []
