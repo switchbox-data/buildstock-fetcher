@@ -19,29 +19,26 @@ def resolve_bldgid_sets(
     bucket_name: str = "oedi-data-lake",
     prefix: str = "nrel-pds-building-stock/end-use-load-profiles-for-us-building-stock",
     output_file: str = "available_urls.json",
-) -> list[BuildStockRelease]:
+) -> dict[str, BuildStockRelease]:
     """
     Get URLs containing 'building_energy_models' from the NREL S3 bucket (first 5 pages only).
     Parses the URL structure to extract available releases.
+
     Args:
         bucket_name (str): Name of the S3 bucket
         prefix (str): Prefix path in the bucket to search
         output_file (str): Path to output JSON file
 
     Returns:
-        list[BuildStockRelease]: List of dictionaries containing parsed URL data with structure:
-            {
-                'release_year': str,     # Year of the release (e.g. '2022')
-                'res_com': str,          # Either 'resstock' or 'comstock'
-                'weather': str,          # Weather type (e.g. 'tmy3')
-                'release_number': str,   # Release number (e.g. '1')
-            }
+        dict[str, BuildStockRelease]: Dictionary of releases with keys following pattern:
+            {res/com}_{release_year}_{weather}_{release_number}
+            Example: "res_2022_tmy3_1"
     """
     # Initialize S3 client with unsigned requests (for public buckets)
     s3_client = boto3.client("s3", config=Config(signature_version=UNSIGNED))
 
-    # List to store all URLs and their metadata
-    releases: list[BuildStockRelease] = []
+    # Dictionary to store releases
+    releases: dict[str, BuildStockRelease] = {}
     # Set to track unique combinations
     seen_combinations = set()
 
@@ -82,7 +79,9 @@ def resolve_bldgid_sets(
                             "weather": weather,
                             "release_number": release_number,
                         }
-                        releases.append(release_data)
+                        # Create key following the pattern: {res/com}_{release_year}_{weather}_{release_number}
+                        key = f"{res_com_type}_{release_year}_{weather}_{release_number}"
+                        releases[key] = release_data
 
     # Save to JSON file with consistent formatting
     output_path = Path(__file__).parent / output_file
@@ -95,8 +94,8 @@ def resolve_bldgid_sets(
 
 if __name__ == "__main__":
     releases = resolve_bldgid_sets()
-    print("\nFirst 5 building energy model releases:")
-    for release in releases[:5]:
-        print("\nRelease:")
-        for key, value in release.items():
-            print(f"  {key}: {value}")
+    print("\nAvailable releases:")
+    for key, release in releases.items():
+        print(f"\n{key}:")
+        for field, value in release.items():
+            print(f"  {field}: {value}")
