@@ -58,30 +58,28 @@ def resolve_bldgid_sets(
 
         for obj in page["Contents"]:
             key = obj["Key"]
-            # Only include paths containing building_energy_models
-            if "building_energy_model" in key:
-                # Remove the prefix to get just the part after it
-                relative_path = key.replace(prefix, "").lstrip("/")
-                if not relative_path:  # Skip if there's nothing after the prefix
-                    continue
+            # Remove the prefix to get just the part after it
+            relative_path = key.replace(prefix, "").lstrip("/")
+            if not relative_path:  # Skip if there's nothing after the prefix
+                continue
 
-                # Try to match the pattern and extract components
-                match = re.match(pattern, relative_path)
-                if match:
-                    release_year, res_com_type, weather, release_number = match.groups()
-                    # Create a tuple of the components to check uniqueness
-                    combination = (release_year, f"{res_com_type}stock", weather, release_number)
-                    if combination not in seen_combinations:
-                        seen_combinations.add(combination)
-                        release_data = {
-                            "release_year": release_year,
-                            "res_com": f"{res_com_type}stock",
-                            "weather": weather,
-                            "release_number": release_number,
-                        }
-                        # Create key following the pattern: {res/com}_{release_year}_{weather}_{release_number}
-                        key = f"{res_com_type}_{release_year}_{weather}_{release_number}"
-                        releases[key] = release_data
+            # Try to match the pattern and extract components
+            match = re.match(pattern, relative_path)
+            if match:
+                release_year, res_com_type, weather, release_number = match.groups()
+                # Create a tuple of the components to check uniqueness
+                combination = (release_year, f"{res_com_type}stock", weather, release_number)
+                if combination not in seen_combinations:
+                    seen_combinations.add(combination)
+                    release_data = {
+                        "release_year": release_year,
+                        "res_com": f"{res_com_type}stock",
+                        "weather": weather,
+                        "release_number": release_number,
+                    }
+                    # Create key following the pattern: {res/com}_{release_year}_{weather}_{release_number}
+                    key = f"{res_com_type}_{release_year}_{weather}_{release_number}"
+                    releases[key] = release_data
 
     # Save to JSON file with consistent formatting
     output_path = Path(__file__).parent / output_file
