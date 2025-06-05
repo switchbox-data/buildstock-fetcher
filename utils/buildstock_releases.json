@@ -1,0 +1,104 @@
+{
+  "com_2021_amy2018_1": {
+    "release_year": "2021",
+    "res_com": "comstock",
+    "weather": "amy2018",
+    "release_number": "1"
+  },
+  "com_2021_tmy3_1": {
+    "release_year": "2021",
+    "res_com": "comstock",
+    "weather": "tmy3",
+    "release_number": "1"
+  },
+  "res_2021_amy2018_1": {
+    "release_year": "2021",
+    "res_com": "resstock",
+    "weather": "amy2018",
+    "release_number": "1"
+  },
+  "res_2021_tmy3_1": {
+    "release_year": "2021",
+    "res_com": "resstock",
+    "weather": "tmy3",
+    "release_number": "1"
+  },
+  "res_2022_amy2012_1.1": {
+    "release_year": "2022",
+    "res_com": "resstock",
+    "weather": "amy2012",
+    "release_number": "1.1"
+  },
+  "res_2022_amy2012_1": {
+    "release_year": "2022",
+    "res_com": "resstock",
+    "weather": "amy2012",
+    "release_number": "1"
+  },
+  "res_2022_amy2018_1.1": {
+    "release_year": "2022",
+    "res_com": "resstock",
+    "weather": "amy2018",
+    "release_number": "1.1"
+  },
+  "res_2022_amy2018_1": {
+    "release_year": "2022",
+    "res_com": "resstock",
+    "weather": "amy2018",
+    "release_number": "1"
+  },
+  "res_2022_tmy3_1.1": {
+    "release_year": "2022",
+    "res_com": "resstock",
+    "weather": "tmy3",
+    "release_number": "1.1"
+  },
+  "res_2022_tmy3_1": {
+    "release_year": "2022",
+    "res_com": "resstock",
+    "weather": "tmy3",
+    "release_number": "1"
+  },
+  "com_2023_amy2018_1": {
+    "release_year": "2023",
+    "res_com": "comstock",
+    "weather": "amy2018",
+    "release_number": "1"
+  },
+  "com_2023_amy2018_2": {
+    "release_year": "2023",
+    "res_com": "comstock",
+    "weather": "amy2018",
+    "release_number": "2"
+  },
+  "com_2024_amy2018_1": {
+    "release_year": "2024",
+    "res_com": "comstock",
+    "weather": "amy2018",
+    "release_number": "1"
+  },
+  "com_2024_amy2018_2": {
+    "release_year": "2024",
+    "res_com": "comstock",
+    "weather": "amy2018",
+    "release_number": "2"
+  },
+  "res_2024_amy2018_2": {
+    "release_year": "2024",
+    "res_com": "resstock",
+    "weather": "amy2018",
+    "release_number": "2"
+  },
+  "res_2024_tmy3_2": {
+    "release_year": "2024",
+    "res_com": "resstock",
+    "weather": "tmy3",
+    "release_number": "2"
+  },
+  "com_2025_amy2018_1": {
+    "release_year": "2025",
+    "res_com": "comstock",
+    "weather": "amy2018",
+    "release_number": "1"
+  }
+}
