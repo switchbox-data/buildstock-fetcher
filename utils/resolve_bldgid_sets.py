@@ -14,6 +14,91 @@ class BuildStockRelease(TypedDict):
     res_com: str
     weather: str
     release_number: str
+    upgrade_ids: list[str]
+
+
+def _find_model_directory(s3_client, bucket_name: str, prefix: str) -> str:
+    """
+    Find the building_energy_model directory path using breadth-first search.
+    Searches each directory level before going deeper, up to 3 levels deep.
+    """
+    paginator = s3_client.get_paginator("list_objects_v2")
+    # Queue contains tuples of (prefix, depth) where depth starts at 0
+    # Ensure prefix ends with / for proper directory listing
+    directories_to_search = [(prefix.rstrip("/") + "/", 0)]
+
+    while directories_to_search:
+        current_prefix, current_depth = directories_to_search.pop(0)  # Get next directory to search
+
+        # Stop if we've gone too deep (3 levels: parent -> child -> grandchild -> great-grandchild)
+        if current_depth >= 3:
+            continue
+
+        # List all directories at current level
+        pages = paginator.paginate(Bucket=bucket_name, Prefix=current_prefix, Delimiter="/")
+
+        for page in pages:
+            # First check directories at this level
+            if "CommonPrefixes" in page:
+                for prefix_obj in page["CommonPrefixes"]:
+                    dir_path = prefix_obj["Prefix"]  # Keep the trailing slash for next level search
+                    dir_name = dir_path.rstrip("/").split("/")[-1]
+
+                    # If we found the building_energy_model directory, return its path
+                    if "building_energy_model" in dir_name.lower():
+                        return dir_path.rstrip("/")  # Remove trailing slash from final result
+
+                    # Add this directory to be searched next, with increased depth
+                    directories_to_search.append((dir_path, current_depth + 1))
+
+    return ""
+
+
+def _get_upgrade_ids(s3_client, bucket_name: str, model_path: str) -> list[str]:
+    """
+    Get the list of upgrade IDs from the building_energy_model directory.
+    Extracts the integer from upgrade=## format.
+    """
+    if not model_path:
+        return []
+
+    upgrade_ids = []
+    paginator = s3_client.get_paginator("list_objects_v2")
+    upgrade_pages = paginator.paginate(Bucket=bucket_name, Prefix=model_path + "/", Delimiter="/")
+
+    for page in upgrade_pages:
+        if "CommonPrefixes" in page:
+            for prefix_obj in page["CommonPrefixes"]:
+                upgrade_path = prefix_obj["Prefix"].rstrip("/")
+                upgrade_dir = upgrade_path.split("/")[-1]
+                # Extract the integer from upgrade=##
+                if upgrade_dir.startswith("upgrade="):
+                    upgrade_num = upgrade_dir.split("=")[1]
+                    upgrade_ids.append(upgrade_num)
+
+    return sorted(upgrade_ids, key=int)  # Sort numerically
+
+
+def find_upgrade_ids(s3_client, bucket_name: str, prefix: str) -> list[str]:
+    """
+    Find the unique building_energy_model directory and its upgrade IDs.
+    For 2021 releases, skips searching and returns empty upgrade list.
+
+    Args:
+        s3_client: Boto3 S3 client
+        bucket_name: Name of the S3 bucket
+        prefix: Path prefix to search under
+
+    Returns:
+        list[str]: List of upgrade IDs found in that directory
+    """
+    # Skip searching for upgrades if this is a 2021 release
+    if "/2021/" in prefix:
+        return []
+
+    model_path = _find_model_directory(s3_client, bucket_name, prefix)
+    upgrade_ids = _get_upgrade_ids(s3_client, bucket_name, model_path)
+    return upgrade_ids
 
 
 def resolve_bldgid_sets(
@@ -34,6 +119,8 @@ def resolve_bldgid_sets(
         dict[str, BuildStockRelease]: Dictionary of releases with keys following pattern:
             {res/com}_{release_year}_{weather}_{release_number}
             Example: "res_2022_tmy3_1"
+            Each release includes the path to its building_energy_model directory
+            and the list of upgrade IDs available for that release.
     """
     # Initialize S3 client with unsigned requests (for public buckets)
     s3_client = boto3.client("s3", config=Config(signature_version=UNSIGNED))
@@ -78,11 +165,16 @@ def resolve_bldgid_sets(
                         combination = (release_year, f"{res_com_type}stock", weather, release_number)
                         if combination not in seen_combinations:
                             seen_combinations.add(combination)
+
+                            # Find the building_energy_model directory and its upgrade IDs
+                            upgrade_ids = find_upgrade_ids(s3_client, bucket_name, release_path)
+
                             release_data = {
                                 "release_year": release_year,
                                 "res_com": f"{res_com_type}stock",
                                 "weather": weather,
                                 "release_number": release_number,
+                                "upgrade_ids": upgrade_ids,
                             }
                             # Create key following the pattern: {res/com}_{release_year}_{weather}_{release_number}
                             key = f"{res_com_type}_{release_year}_{weather}_{release_number}"
