@@ -20,7 +20,6 @@ class BuildStockRelease(TypedDict):
 def _find_model_directory(s3_client, bucket_name: str, prefix: str) -> str:
     """
     Find the building_energy_model directory path using breadth-first search.
-    Searches each directory level before going deeper, up to 3 levels deep.
     """
     paginator = s3_client.get_paginator("list_objects_v2")
     # Queue contains tuples of (prefix, depth) where depth starts at 0
@@ -30,7 +29,7 @@ def _find_model_directory(s3_client, bucket_name: str, prefix: str) -> str:
     while directories_to_search:
         current_prefix, current_depth = directories_to_search.pop(0)  # Get next directory to search
 
-        # Stop if we've gone too deep (3 levels: parent -> child -> grandchild -> great-grandchild)
+        # Stop if we've gone too deep
         if current_depth >= 3:
             continue
 
@@ -92,7 +91,8 @@ def find_upgrade_ids(s3_client, bucket_name: str, prefix: str) -> list[str]:
     Returns:
         list[str]: List of upgrade IDs found in that directory
     """
-    # Skip searching for upgrades if this is a 2021 release
+    # Skip searching for upgrades if this is a 2021 release.
+    # The 2021 release doesn't have any upgrades.
     if "/2021/" in prefix:
         return []
 
