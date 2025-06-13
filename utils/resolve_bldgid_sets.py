@@ -81,7 +81,7 @@ def _get_upgrade_ids(s3_client, bucket_name: str, model_path: str) -> list[str]:
 def find_upgrade_ids(s3_client, bucket_name: str, prefix: str) -> list[str]:
     """
     Find the unique building_energy_model directory and its upgrade IDs.
-    For 2021 releases, skips searching and returns empty upgrade list.
+    For 2021 releases, returns ['0'] as the only upgrade ID.
 
     Args:
         s3_client: Boto3 S3 client
@@ -91,10 +91,9 @@ def find_upgrade_ids(s3_client, bucket_name: str, prefix: str) -> list[str]:
     Returns:
         list[str]: List of upgrade IDs found in that directory
     """
-    # Skip searching for upgrades if this is a 2021 release.
-    # The 2021 release doesn't have any upgrades.
+    # For 2021 releases, return ['0'] as the only upgrade ID
     if "/2021/" in prefix:
-        return []
+        return ["0"]
 
     model_path = _find_model_directory(s3_client, bucket_name, prefix)
     upgrade_ids = _get_upgrade_ids(s3_client, bucket_name, model_path)
